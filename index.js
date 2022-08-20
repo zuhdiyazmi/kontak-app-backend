@@ -29,7 +29,7 @@ app.post("/tbKontak", (req, res) => {
       if (listKontak.length >= 1) {
         return res.json({
           ok: false,
-          message: "id " + req.body.id + " telah digunakan",
+          message: "id: " + req.body.id + " telah digunakan",
         });
       } else if (err) {
         return res.json({
@@ -62,7 +62,7 @@ app.get("/tbKontak/:id", (req, res) => {
     } else if (rows.length === 0) {
       return res.json({
         ok: false,
-        message: "id " + req.params.id + " tidak ditemukan",
+        message: "id: " + req.params.id + " tidak ditemukan",
       });
     }
     return res.json({
@@ -83,7 +83,7 @@ app.put("/tbKontak/:id", (req, res) => {
     } else if (rows.length === 0) {
       return res.json({
         ok: false,
-        message: "id " + req.params.id + " tidak ditemukan",
+        message: "id: " + req.params.id + " tidak ditemukan",
       });
     } else {
       db.query(
@@ -99,7 +99,12 @@ app.put("/tbKontak/:id", (req, res) => {
           } else if (rows.length >= 1) {
             return res.json({
               ok: false,
-              message: "id " + req.body.id + " telah digunakan",
+              message:
+                "gagal edit id: " +
+                req.params.id +
+                " karena id: " +
+                req.body.id +
+                " telah digunakan",
             });
           } else
             db.query(
@@ -109,7 +114,7 @@ app.put("/tbKontak/:id", (req, res) => {
                 if (err)
                   return res.json({
                     ok: false,
-                    message: "edit gagal untuk id " + req.params.id,
+                    message: "edit gagal untuk id: " + req.params.id,
                   });
                 return res.json("edit berhasil");
               }
@@ -131,7 +136,7 @@ app.delete("/tbKontak/:id", (req, res) => {
     } else if (rows.length === 0) {
       return res.json({
         ok: false,
-        message: "id " + req.params.id + " tidak ditemukan",
+        message: "id: " + req.params.id + " tidak ditemukan",
       });
     } else {
       db.query(
@@ -141,7 +146,7 @@ app.delete("/tbKontak/:id", (req, res) => {
           if (err)
             return res.json({
               ok: false,
-              message: "delete gagal untuk id " + req.params.id,
+              message: "delete gagal untuk id: " + req.params.id,
             });
           return res.json("delete berhasil");
         }
