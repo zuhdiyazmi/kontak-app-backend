@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 
-app.get("/tbKontak", (req, res) => {
+app.get("/kontak", (req, res) => {
   db.query("SELECT * FROM kontak", (err, rows) => {
     if (err)
       return res.json({
@@ -20,7 +20,7 @@ app.get("/tbKontak", (req, res) => {
   });
 });
 
-app.post("/tbKontak", (req, res) => {
+app.post("/kontak", (req, res) => {
   db.query(
     "SELECT * FROM kontak WHERE id = ?",
     req.body.id,
@@ -50,7 +50,7 @@ app.post("/tbKontak", (req, res) => {
   );
 });
 
-app.get("/tbKontak/:id", (req, res) => {
+app.get("/kontak/:id", (req, res) => {
   console.log(req.params);
   db.query("SELECT * FROM kontak WHERE id = ?", req.params.id, (err, rows) => {
     console.log(rows);
@@ -72,7 +72,7 @@ app.get("/tbKontak/:id", (req, res) => {
   });
 });
 
-app.put("/tbKontak/:id", (req, res) => {
+app.put("/kontak/:id", (req, res) => {
   db.query("SELECT * FROM kontak WHERE id = ?", req.params.id, (err, rows) => {
     console.log(rows);
     if (err) {
@@ -125,7 +125,7 @@ app.put("/tbKontak/:id", (req, res) => {
   });
 });
 
-app.delete("/tbKontak/:id", (req, res) => {
+app.delete("/kontak/:id", (req, res) => {
   db.query("SELECT * FROM kontak WHERE id = ?", req.params.id, (err, rows) => {
     console.log(rows);
     if (err) {
