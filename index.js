@@ -73,31 +73,50 @@ app.get("/tbKontak/:id", (req, res) => {
 });
 
 app.put("/tbKontak/:id", (req, res) => {
-  db.query("SELECT * FROM kontak WHERE id = ?", req.body.id, (err, rows) => {
+  db.query("SELECT * FROM kontak WHERE id = ?", req.params.id, (err, rows) => {
     console.log(rows);
     if (err) {
       return res.json({
         ok: false,
         message: err,
       });
-    } else if (rows.length >= 1) {
+    } else if (rows.length === 0) {
       return res.json({
         ok: false,
-        message: "id " + req.body.id + " telah digunakan",
+        message: "id " + req.params.id + " tidak ditemukan",
       });
-    } else
+    } else {
       db.query(
-        "UPDATE kontak SET ? WHERE id = ?",
-        [req.body, req.params.id],
+        "SELECT * FROM kontak WHERE id = ?",
+        req.body.id,
         (err, rows) => {
-          if (err)
+          console.log(rows);
+          if (err) {
             return res.json({
               ok: false,
-              message: "edit gagal untuk id " + req.params.id,
+              message: err,
             });
-          return res.json("edit berhasil");
+          } else if (rows.length >= 1) {
+            return res.json({
+              ok: false,
+              message: "id " + req.body.id + " telah digunakan",
+            });
+          } else
+            db.query(
+              "UPDATE kontak SET ? WHERE id = ?",
+              [req.body, req.params.id],
+              (err, rows) => {
+                if (err)
+                  return res.json({
+                    ok: false,
+                    message: "edit gagal untuk id " + req.params.id,
+                  });
+                return res.json("edit berhasil");
+              }
+            );
         }
       );
+    }
   });
 });
 
