@@ -7,7 +7,30 @@ const app = express();
 app.use(express.json());
 
 app.get("/kontak", (req, res) => {
-  db.query("SELECT * FROM kontak", (err, rows) => {
+  console.log(req.query);
+  const limit = req.query.limit;
+  const offset = req.query.offset;
+  const name = req.query.name;
+  let queryLimit = "";
+  let queryOffset = "";
+  let queryName = "";
+  if (limit) {
+    queryLimit = `LIMIT ${limit}`;
+  }
+  if (offset) {
+    queryOffset = `OFFSET ${offset}`;
+  }
+  if (name) {
+    queryName = `WHERE name = ${name}`;
+  }
+  if (offset && !limit) {
+    return res.json({
+      ok: false,
+      message: "harus menyertakan limit",
+    });
+  }
+  let sql = `SELECT * FROM kontak ${queryName} ${queryLimit} ${queryOffset} `;
+  db.query(sql, (err, rows) => {
     if (err)
       return res.json({
         ok: false,
