@@ -21,33 +21,14 @@ app.get("/kontak", (req, res) => {
 });
 
 app.post("/kontak", (req, res) => {
-  db.query(
-    "SELECT * FROM kontak WHERE id = ?",
-    req.body.id,
-    (err, listKontak) => {
-      console.log(listKontak);
-      if (listKontak.length >= 1) {
-        return res.json({
-          ok: false,
-          message: "id: " + req.body.id + " telah digunakan",
-        });
-      } else if (err) {
-        return res.json({
-          ok: false,
-          message: err,
-        });
-      } else {
-        db.query("INSERT INTO kontak SET ?", req.body, (err, rows) => {
-          if (err)
-            return res.json({
-              ok: false,
-              message: "gagal",
-            });
-          return res.json("add berhasil");
-        });
-      }
-    }
-  );
+  db.query("INSERT INTO kontak SET ?", req.body, (err, rows) => {
+    if (err)
+      return res.json({
+        ok: false,
+        message: "gagal",
+      });
+    return res.json("add berhasil");
+  });
 });
 
 app.get("/kontak/:id", (req, res) => {
