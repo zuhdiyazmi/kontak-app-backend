@@ -11,11 +11,9 @@ app.get("/kontak", (req, res) => {
   const limit = req.query.limit;
   const offset = req.query.offset;
   const name_eq = req.query.name_eq;
-  const name_like = req.query.name_like;
   let queryLimit = "";
   let queryOffset = "";
   let queryNameEq = "";
-  let queryNameLike = "";
   if (limit) {
     queryLimit = `LIMIT ${limit}`;
   }
