@@ -10,18 +10,20 @@ app.get("/kontak", (req, res) => {
   console.log(req.query);
   const limit = req.query.limit;
   const offset = req.query.offset;
-  const name = req.query.name;
+  const name_eq = req.query.name_eq;
+  const name_like = req.query.name_like;
   let queryLimit = "";
   let queryOffset = "";
-  let queryName = "";
+  let queryNameEq = "";
+  let queryNameLike = "";
   if (limit) {
     queryLimit = `LIMIT ${limit}`;
   }
   if (offset) {
     queryOffset = `OFFSET ${offset}`;
   }
-  if (name) {
-    queryName = `WHERE name = ${name}`;
+  if (name_eq) {
+    queryNameEq = `WHERE name = '${name_eq}'`;
   }
   if (offset && !limit) {
     return res.json({
@@ -29,7 +31,8 @@ app.get("/kontak", (req, res) => {
       message: "harus menyertakan limit",
     });
   }
-  let sql = `SELECT * FROM kontak ${queryName} ${queryLimit} ${queryOffset} `;
+  let sql = `SELECT * FROM kontak ${queryNameEq} ${queryLimit} ${queryOffset} `;
+  console.log(sql);
   db.query(sql, (err, rows) => {
     if (err)
       return res.json({
